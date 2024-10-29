@@ -1,0 +1,133 @@
+---
+title: "Albrecht-PS2"
+author: "Evelyn Albrecht"
+format: html
+editor: visual
+---
+
+## Set up
+
+Clear R's environment and turn on relevant packages
+
+```{r}
+rm(list=ls()) 
+library(tidyverse) 
+library("here") 
+```
+
+## Import data
+
+Import the csv file stored within the data folder and assign it a name
+
+```{r}
+Halloween_data <- read.csv(here("Data", "Halloween_data_PS2.csv")) 
+```
+
+## Examine the data 
+
+Use the glimpse and structure functions to examine the data.
+
+```{r}
+glimpse(Halloween_data) 
+str(Halloween_data)
+```
+
+## Change data types where necessary 
+
+Change costume type and sugar high from character to factor data.
+
+```{r}
+Halloween_data$Costume_type <- as.factor(Halloween_data$Costume_type)  
+Halloween_data$sugar_high <- as.factor(Halloween_data$sugar_high) 
+```
+
+## Fix errors in data set 
+
+Fix errors that likely resulted from a lack of data validation (fix repeat levels in the costume types)
+
+Have R show levels for of costume type. Then assign a value to observations meaning the same thing. Override the inconsistent names with one unifying name. Convert to factor variables once again.
+
+```{r}
+levels(Halloween_data$Costume_type) 
+fix_Not_scary <- which(Halloween_data$Costume_type %in% c("not scary", "Not scary", "notscary")) 
+Halloween_data$Costume_type[fix_Not_scary] <- 
+fix_Scary <- which(Halloween_data$Costume_type %in% c("scary", "Scary", "scaly", "scary "))
+Halloween_data$Costume_type[fix_Scary] <- "Scary"
+Halloween_data$Costume_type <- factor(Halloween_data$Costume_type) 
+levels(Halloween_data$Costume_type)
+```
+
+Fix repeat levels in sugar high through the same methods.
+
+```{r}
+levels(Halloween_data$sugar_high)
+fix_No <- which(Halloween_data$sugar_high %in% c("no", "No", "NO"))
+Halloween_data$sugar_high[fix_No] <- "No"
+fix_Yes <- which(Halloween_data$sugar_high %in% c("yes","Yes"))
+Halloween_data$sugar_high[fix_Yes] <- "yes"
+Halloween_data$sugar_high <- factor(Halloween_data$sugar_high)
+levels(Halloween_data$sugar_high)
+```
+
+## Make a scatter plot of min_temp_treat_C vs age (and write code that recreates Figure 1)
+
+Create a plot of the halloween data with age on the x-axis and temperature on the y-axis. distinuguish between costume types by color and shape. Make points size 5, label the x-axis, label the y-axis, and change the theme to black-and-white.
+
+```{r}
+ggplot(Halloween_data, aes(x= age, y=min_temp_trick_treat_C, colour = Costume_type, shape = Costume_type)) + 
+  geom_point(size = 5) +
+  xlab("Age of trick-or-treater") + 
+  ylab("Minimum temperature while out") + 
+  theme_bw() 
+```
+
+## Write code that isolates the data for children who are 10 years old or older and who consumed 100 or more grams of Halloween candy. Use the resulting data to plot a histogram showing the count of the number of kids who ate certain number of pieces of candy.
+
+Create a new data frame to isolate the data that meets the parameters.
+
+Within Halloween_data, filter the data for entries with an age greater than or equal to 10 and grams of candy consumed greater than or equal to 100g and turn it into a new dataframe named candy_consumption.
+
+```{r}
+candy_consumption <- Halloween_data %>%
+  filter(age >=10, g_candy_consumed >=100) 
+```
+
+Make the histogram of this new dataframe (candy_consumption) with the number of candy pieces eaten plotted along the x-axis. Label the x and y axes Number of candy pieces eaten and Count.
+
+```{r}
+ggplot(candy_consumption, aes(x=candy_pieces)) +
+  geom_histogram() +
+  xlab("Number of candy pieces eaten") +
+  ylab("Count")
+```
+
+## Next calculate some summary statistics that show the mean and standard deviation for the following variables broken down by whether or not the child experienced a sugar high. Include in your code a method that opens a view of the resulting data as a new table view in RStudio. Don not create a new object in your Environment 
+
+-   age
+
+-   grams of candy consumed
+
+Within the dataframe, Halloween_data, group the data by the two sugar high treatments. obtain the summary statistics, specifically the mean and standard deviation, of age and grams of candy consumed. Have this opened as a table in the source pane.
+
+```{r}
+Halloween_data %>%
+  group_by(sugar_high) %>%
+  summarise(mean_age = mean(age), sd_age = sd(age), mean_g_candy_consumed = mean(g_candy_consumed), sd_g_candy_consumed = sd(g_candy_consumed)) %>%
+view()
+```
+
+## Write code that replicates figure 3 as closely as you can 
+
+Create a box-and-whiskers plot of the Halloween data with costume type on the x-axis and grams of candy consumed on the y-axis. Make the size of the points 3, change the color to orange, and make them slightly transparent. Name the x and y axes. Separate the plot into 2 sorted by whether the child experienced a sugar high. Change the theme to black and white.
+
+```{r}
+ggplot(Halloween_data, aes(x= Costume_type, y= g_candy_consumed)) + 
+  geom_boxplot() + 
+  geom_point(size = 3, colour = "orange", alpha = 0.7) +
+  xlab("Costume type") + 
+  ylab("Ammount of candy consumed (g)") +
+  facet_wrap(Halloween_data$sugar_high) + 
+  theme_bw()
+```
+
+## Commit changes and push to git hub repository. 
