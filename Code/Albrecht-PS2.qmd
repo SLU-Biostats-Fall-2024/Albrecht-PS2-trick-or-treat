@@ -23,7 +23,7 @@ Import the csv file stored within the data folder and assign it a name
 Halloween_data <- read.csv(here("Data", "Halloween_data_PS2.csv")) 
 ```
 
-## Examine the data 
+## Examine the data
 
 Use the glimpse and structure functions to examine the data.
 
@@ -32,7 +32,7 @@ glimpse(Halloween_data)
 str(Halloween_data)
 ```
 
-## Change data types where necessary 
+## Change data types where necessary
 
 Change costume type and sugar high from character to factor data.
 
@@ -41,7 +41,7 @@ Halloween_data$Costume_type <- as.factor(Halloween_data$Costume_type)
 Halloween_data$sugar_high <- as.factor(Halloween_data$sugar_high) 
 ```
 
-## Fix errors in data set 
+## Fix errors in data set
 
 Fix errors that likely resulted from a lack of data validation (fix repeat levels in the costume types)
 
@@ -101,7 +101,7 @@ ggplot(candy_consumption, aes(x=candy_pieces)) +
   ylab("Count")
 ```
 
-## Next calculate some summary statistics that show the mean and standard deviation for the following variables broken down by whether or not the child experienced a sugar high. Include in your code a method that opens a view of the resulting data as a new table view in RStudio. Don not create a new object in your Environment 
+## Next calculate some summary statistics that show the mean and standard deviation for the following variables broken down by whether or not the child experienced a sugar high. Include in your code a method that opens a view of the resulting data as a new table view in RStudio. Don not create a new object in your Environment
 
 -   age
 
@@ -116,7 +116,7 @@ Halloween_data %>%
 view()
 ```
 
-## Write code that replicates figure 3 as closely as you can 
+## Write code that replicates figure 3 as closely as you can
 
 Create a box-and-whiskers plot of the Halloween data with costume type on the x-axis and grams of candy consumed on the y-axis. Make the size of the points 3, change the color to orange, and make them slightly transparent. Name the x and y axes. Separate the plot into 2 sorted by whether the child experienced a sugar high. Change the theme to black and white.
 
@@ -130,4 +130,4 @@ ggplot(Halloween_data, aes(x= Costume_type, y= g_candy_consumed)) +
   theme_bw()
 ```
 
-## Commit changes and push to git hub repository. 
+## Commit changes and push to git hub repository.
