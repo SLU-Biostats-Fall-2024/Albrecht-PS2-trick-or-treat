@@ -1,0 +1,40 @@
+---
+title: "PS2-feedback"
+format: html
+editor: visual
+---
+
+## Feedback on PS2
+
+On your line 15 you incorrectly called the here package.
+You need `library(here)` not `library("here")`
+
+I'd like to see more response to the code noted outside your code chunks. For example, on line 34, you could make some comments about what you learn by running the glimpse and str functions. There is no point in running the functions if you don't think about (and then make note of) what you learn by examining the data.
+
+I very much like the information you included on lines 46 - 48. 
+
+Line 53 is incomplete. You did not assign the correct values to "Not scary". Running line 53 turned all of your "not scary" costume types to `NA`.
+
+While error fixing, you did not check for any outliers or problems with the numeric data types by, eg. plotting the values.
+
+EG Line 84 - work on formatting your .qmd file with markdown such that they are visually appealing. If you look on the "Visual" version of your code, you'll see that having all of those words "Write code that isolcates....." after two hashtags makes them render as a giant heading.
+
+EG Lines 113 - 116 - think about how you space your code. It would be easier to read and understand if you use spacing like this:
+
+```{r}
+Halloween_data %>%
+  group_by(sugar_high) %>%
+  summarise(
+    mean_age = mean(age), 
+    sd_age = sd(age),
+    mean_g_candy_consumed = mean(g_candy_consumed),
+    sd_g_candy_consumed = sd(g_candy_consumed)) %>%
+view()
+```
+
+Lines 123 - 131 - When you looked at your plot, it should have alerted you to a problem with your costume_type factor level. Also, I can see from the facet that you used "No" with a capital N for one of your sugar_high levels while I use "no".
+
+One thing that will help you is to try to slow down a bit and pay attention to smaller details in your code.
+
+Also, before you submit an assignent, clear R's workspace and run through all of your code line by line to make sure it is working properly.
+
